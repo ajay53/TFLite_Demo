@@ -89,9 +89,14 @@ class ObjectDetectorImpl @Inject constructor(
     }
 
     override suspend fun detect(bitmap: Bitmap): List<DetectionResult> {
-        // 1. Preprocessing
+        val startTime = System.currentTimeMillis()
+
+        // --- 1. PREPROCESSING ---
+        val preProcessStart = System.currentTimeMillis()
+
         // EfficientDet-Lite2 expects 448x448.
-        // Most EfficientDet FLOAT models expect [0, 1] normalization.
+        // EfficientDet-Lite2 usually expects FLOAT32 [0, 1] normalization.
+        // If your model is UINT8, change DataType below and remove NormalizeOp.
         val imageProcessor = ImageProcessor.Builder()
             .add(ResizeOp(inputImageSize, inputImageSize, ResizeOp.ResizeMethod.BILINEAR))
             // Normalize: (value - mean) / std.
@@ -105,22 +110,19 @@ class ObjectDetectorImpl @Inject constructor(
         tensorImage.load(bitmap)
         val processedImage = imageProcessor.process(tensorImage)
 
-        // Get the processed buffer
-        val processedBuffer = processedImage.buffer
+        // Loading the buffer into LiteRT
 
         // region Convert Image to FloatArray
-
-
         // 1. Get the ByteBuffer from your processed TensorImage
         val byteBuffer = processedImage.buffer
         byteBuffer.rewind() // Ensure you start from the beginning
 
-// 2. Create a FloatBuffer view of the data
+        // 2. Create a FloatBuffer view of the data
         val floatBuffer = byteBuffer.asFloatBuffer()
         val intBuffer = byteBuffer.asIntBuffer()
 
 
-// 3. Create a FloatArray and copy the data into it
+        // 3. Create a FloatArray and copy the data into it
         val floatArray = FloatArray(floatBuffer.limit())
         floatBuffer.get(floatArray)
 
@@ -128,39 +130,24 @@ class ObjectDetectorImpl @Inject constructor(
         intBuffer.get(intArray)
 
 
-// 4. Write the FloatArray to your LiteRT TensorBuffer
+        // 4. Write the FloatArray to your LiteRT TensorBuffer
         inputBuffers[0].writeInt(intArray)
 //        inputBuffers[0].writeFloat(floatArray)
 
-
         // endregion
 
+        val preProcessEnd = System.currentTimeMillis()
 
-// Ensure the position is at 0 before copying
-//        processedBuffer.rewind()
-
-// Transfer the data to your input buffer
-//        inputBuffers[0].writeFloat(processedBuffer)
-
-
-//        val (h, w) = Pair(256, 256)
-//        val (h, w) = Pair(448, 448)
-
-//        var image = processedImage.bitmap.scale(w, h, true)
-
-//        val inputFloatArray = normalize(processedImage.bitmap, 127.5f, 127.5f)
-
-//        inputBuffers[0].writeFloat(inputFloatArray)
-//        inputBuffers[0].writeFloat(inputFloatArray)
-
+        // --- 2. INFERENCE ---
+        val inferenceStart = System.currentTimeMillis()
 
         model.run(inputBuffers, outputBuffers)
 
-//        val outputFloatArray = outputBuffers[0].readFloat()
-//        val outputBuffer = FloatBuffer.wrap(outputFloatArray)
+        val inferenceEnd = System.currentTimeMillis()
 
-        // 4. Post-processing
-        // FIX: LiteRT 2.1.0 uses readFloatArray() for multiple values, not readFloat()
+        // --- 3. POST-PROCESSING ---
+        val postProcessStart = System.currentTimeMillis()
+
         val locations = outputBuffers[0].readFloat()
         val classes = outputBuffers[1].readFloat()
         val scores = outputBuffers[2].readFloat()
@@ -187,8 +174,30 @@ class ObjectDetectorImpl @Inject constructor(
             }
         }
 
-        Log.d(TAG, "detect: found ${results.size} objects")
+        val postProcessEnd = System.currentTimeMillis()
+        val totalTime = System.currentTimeMillis() - startTime
+
+        // --- LOGGING ---
+        Log.d(TAG, """
+        Performance Stats:
+        - Pre-processing:  ${preProcessEnd - preProcessStart}ms
+        - Inference:       ${inferenceEnd - inferenceStart}ms
+        - Post-processing: ${postProcessEnd - postProcessStart}ms
+        - Total Latency:   ${totalTime}ms
+        - Objects Found:   ${results.size}
+    """.trimIndent())
         return results
+        // ---------------------------
+
+
+
+
+
+
+
+        // 4. Post-processing
+        // FIX: LiteRT 2.1.0 uses readFloatArray() for multiple values, not readFloat()
+
     }
 
 
