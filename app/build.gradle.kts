@@ -1,14 +1,9 @@
-import com.android.build.api.dsl.AaptOptions
-import com.android.build.api.dsl.AndroidResources
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.undercouchDownload)
 }
 
 android {
@@ -38,25 +33,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-//    kotlinOptions {
-//        jvmTarget = "11"
-//    }
-    kotlin {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
+    kotlinOptions {
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
     }
-    /*fun AndroidResources.() {
-        noCompress "tflite"
-    }*/
 }
-
-// Import DownloadModels task
-project.ext.set("ASSET_DIR", "$projectDir/src/main/assets")
-apply(from = "download_models.gradle")
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -67,6 +50,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.material.icons.extended)
     
     // CameraX
     implementation(libs.bundles.camera)
@@ -85,6 +69,9 @@ dependencies {
     }
 
     implementation(libs.litert.metadata)
+
+    // MediaPipe
+    implementation(libs.mediapipe.vision)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

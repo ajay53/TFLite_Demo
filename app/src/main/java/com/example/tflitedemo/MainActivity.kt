@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.tflitedemo.presentation.MediaPipeDetectionScreen
 import com.example.tflitedemo.presentation.ObjectDetectionScreen
 import com.example.tflitedemo.presentation.Screen
 import com.example.tflitedemo.ui.theme.TFLiteDemoTheme
@@ -48,7 +49,7 @@ fun MainScreen() {
 
     val items = listOf(
         Screen.ObjectDetection,
-        Screen.FutureFeature1,
+        Screen.MediaPipeDetection,
         Screen.FutureFeature2
     )
 
@@ -96,8 +97,9 @@ fun MainScreen() {
                 composable(Screen.ObjectDetection.route) {
                     ObjectDetectionScreen()
                 }
-                composable(Screen.FutureFeature1.route) {
-                    PlaceholderScreen("Future Feature 1")
+                composable(Screen.MediaPipeDetection.route) {
+                    MediaPipeDetectionScreen()
+//                    PlaceholderScreen("Future Feature 1")
                 }
                 composable(Screen.FutureFeature2.route) {
                     PlaceholderScreen("Future Feature 2")
