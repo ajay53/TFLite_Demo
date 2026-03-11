@@ -189,87 +189,9 @@ class ObjectDetectorImpl @Inject constructor(
         return results
         // ---------------------------
 
-
-
-
-
-
-
         // 4. Post-processing
         // FIX: LiteRT 2.1.0 uses readFloatArray() for multiple values, not readFloat()
 
-    }
-
-
-    //    private fun normalize(tensorImage: TensorImage, mean: Float, stddev: Float): FloatArray {
-    private fun normalize(image: Bitmap, mean: Float, stddev: Float): FloatArray {
-
-//        val image = tensorImage.bitmap
-
-        val width = image.width
-        val height = image.height
-        val numPixels = width * height
-        val pixelsIntArray = IntArray(numPixels)
-        val outputFloatArray = FloatArray(numPixels * 3) // 3 channels (R, G, B)
-
-        image.getPixels(pixelsIntArray, 0, width, 0, 0, width, height)
-
-        for (i in 0 until numPixels) {
-            val pixel = pixelsIntArray[i]
-
-            // Extract channels (ARGB_8888 format assumed)
-            val (r, g, b) =
-                Triple(
-                    Color.red(pixel).toFloat(),
-                    Color.green(pixel).toFloat(),
-                    Color.blue(pixel).toFloat(),
-                )
-
-            // Normalize and store in interleaved format
-            val outputBaseIndex = i * 3
-            outputFloatArray[outputBaseIndex + 0] = (r - mean) / stddev // Red
-            outputFloatArray[outputBaseIndex + 1] = (g - mean) / stddev // Green
-            outputFloatArray[outputBaseIndex + 2] = (b - mean) / stddev // Blue
-        }
-
-        return outputFloatArray
-    }
-
-    private fun getMetadata() {
-        // 1. Load the model file from assets
-//        val fileDescriptor = assets.openFd("model.tflite")
-//        val inputStream = FileInputStream(fileDescriptor.fileDescriptor)
-//        val fileChannel = inputStream.channel
-//        val startOffset = fileDescriptor.startOffset
-//        val declaredLength = fileDescriptor.declaredLength
-// This is your Bytebuffer
-//        val modelBuffer = fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength)
-
-// 2. Create the extractor from your model buffer
-//        val metadataExtractor = MetadataExtractor(modelBuffer)
-
-// 3. Use the modelBuffer for the Interpreter
-//        val interpreter = Interpreter(modelBuffer)
-
-//_________________________
-
-//        // 1. Create the extractor from your model buffer
-//        val metadataExtractor = MetadataExtractor(modelBuffer)
-//
-//// 2. Check if metadata even exists
-//        if (metadataExtractor.hasMetadata()) {
-//
-//            // 3. Get Input Normalization (Mean and Std)
-//            val inputMetadata = metadataExtractor.getInputTensorMetadata(0)
-//            val processUnits = inputMetadata.processUnits(0) // Usually where Normalization lives
-//            // Note: You may need to parse the FlatBuffer objects here for specific float values
-//
-//            // 4. Get Labels from the packed files
-//            val labelFileStream = metadataExtractor.getAssociatedFile("labels.txt")
-//            val labels = labelFileStream.bufferedReader().readLines()
-//
-//            Log.d("LiteRT", "Loaded ${labels.size} labels directly from model!")
-//        }
     }
 
     override fun close() {

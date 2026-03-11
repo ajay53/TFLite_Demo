@@ -1,13 +1,10 @@
 package com.example.tflitedemo.presentation
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tflitedemo.domain.DetectionResult
 import com.example.tflitedemo.domain.ObjectDetector
-import com.google.ai.edge.litert.Accelerator
-import com.google.ai.edge.litert.CompiledModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,12 +38,21 @@ class ObjectDetectionViewModel @Inject constructor(
         }
     }
 
+    fun onImageUpdate(bitmap: Bitmap) {
+        viewModelScope.launch(Dispatchers.Default) {
+            val results = objectDetector.detect(bitmap)
+            try {
+                _uiState.value = ObjectDetectionUiState.Success(bitmap, results)
+            } catch (e: Exception) {
+                _uiState.value = ObjectDetectionUiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         objectDetector.close()
     }
-
-
 }
 
 sealed interface ObjectDetectionUiState {

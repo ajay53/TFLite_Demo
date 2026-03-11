@@ -1,9 +1,20 @@
 tasks.register('downloadDeeplab', Download) {
     // This model is custom made using Model Maker. A detailed guide can be found here:
     // https://www.tensorflow.org/lite/models/modify/model_maker/speech_recognition
+//    src 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite2/float32/1/efficientdet_lite2.tflite'
     src 'https://storage.googleapis.com/ai-edge/interpreter-samples/object_detection/android/efficientdet_lite2.tflite'
     dest project.ext.ASSET_DIR + '/efficientdet-lite2.tflite'
     overwrite false
+
+//    src 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite0/float32/1/efficientdet_lite0.tflite'
+//    dest project.ext.ASSET_DIR + '/efficientdet-lite0.tflite'
+//    overwrite false
+//
+//    src 'https://storage.googleapis.com/mediapipe-models/object_detector/efficientdet_lite2/float32/1/efficientdet_lite2.tflite'
+//    dest project.ext.ASSET_DIR + '/efficientdet-lite2.tflite'
+//    overwrite false
 }
 
 preBuild.dependsOn downloadDeeplab
+
+

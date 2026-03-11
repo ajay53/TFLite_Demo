@@ -67,20 +67,16 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    
+    // CameraX
+    implementation(libs.bundles.camera)
 
     // Hilt
     implementation(libs.hilt.android)
-//    implementation(libs.litert.support.api)
     ksp(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-    // TFLite
-//    implementation(libs.tensorflow.lite)
-//    implementation(libs.tensorflow.lite.support)
-//    implementation(libs.tensorflow.lite.metadata)
-
-    // LiteRT
-    // Main LiteRT runtime (contains the API classes)
+    // TFLite / LiteRT
     implementation(libs.litert)
 
     // LiteRT Support (Exclude the internal API to prevent duplicates)
@@ -89,9 +85,6 @@ dependencies {
     }
 
     implementation(libs.litert.metadata)
-
-
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

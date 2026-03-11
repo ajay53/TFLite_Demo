@@ -19,6 +19,8 @@ hiltNavigationCompose = "1.2.0"
 tensorflowLite = "2.16.1"
 tensorflowLiteSupport = "0.4.4"
 tensorflowLiteMetadata = "0.4.4"
+camerax = "1.5.3"
+materialIconsExtended = "1.7.8"
 
 
 #liteRT = "2.0.2"
@@ -60,6 +62,22 @@ litert = { group = "com.google.ai.edge.litert", name = "litert", version.ref = "
 # This provides TensorImage, ImageProcessor, etc., without duplicating the API
 litert-support = { group = "com.google.ai.edge.litert", name = "litert-support", version.ref = "litertSupport" }
 litert-metadata = { group = "com.google.ai.edge.litert", name = "litert-metadata", version.ref = "litertSupport" }
+#implementation("androidx.camera:camera-core:${camerax_version}")
+#implementation("androidx.camera:camera-camera2:${camerax_version}")
+#implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+#implementation("androidx.camera:camera-view:${camerax_version}")
+camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camerax" }
+camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camerax" }
+camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camerax" }
+camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
+
+#implementation("androidx.compose.material:material-icons-extended:1.7.7") // Use latest version [6]
+material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
+
+[bundles]
+camera = ["camera-core", "camera2", "camera-lifecycle", "camera-view"]
+
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
