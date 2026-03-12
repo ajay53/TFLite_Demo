@@ -62,9 +62,9 @@ class MediaPipeObjectDetectionViewModel @Inject constructor(
         result: ObjectDetectorResult,
         input: com.google.mediapipe.framework.image.MPImage
     ) {
-        if (result.detections().isNotEmpty()) {
+        /*if (result.detections().isNotEmpty()) {
             Log.d(TAG, "returnLivestreamResult: ${result.detections()}")
-        }
+        }*/
         _uiState.value = MediaPipeUiState.Success(result)
     }
 
