@@ -72,6 +72,7 @@ dependencies {
 
     // MediaPipe
     implementation(libs.mediapipe.vision)
+    implementation(libs.mediapipe.genai)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

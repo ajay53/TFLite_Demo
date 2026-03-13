@@ -13,11 +13,10 @@ hilt = "2.52"
 hiltNavigationCompose = "1.2.0"
 camerax = "1.5.3"
 materialIconsExtended = "1.7.8"
-liteRT = "2.1.0"
+liteRT = "2.1.1"
 litertSupport = "1.4.1"
-
 undercouchDownload = "5.6.0"
-mediapipe = "0.10.14"
+mediapipe = "0.10.32"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -46,6 +45,7 @@ camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", versi
 camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camerax" }
 material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtended" }
 mediapipe-vision = { group = "com.google.mediapipe", name = "tasks-vision", version.ref = "mediapipe" }
+mediapipe-genai = { group = "com.google.mediapipe", name = "tasks-genai", version.ref = "mediapipe" }
 
 [bundles]
 camera = ["camera-core", "camera2", "camera-lifecycle", "camera-view"]

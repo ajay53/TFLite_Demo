@@ -18,9 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.tflitedemo.presentation.MediaPipeDetectionScreen
-import com.example.tflitedemo.presentation.ObjectDetectionScreen
-import com.example.tflitedemo.presentation.Screen
+import com.example.tflitedemo.presentation.*
 import com.example.tflitedemo.ui.theme.TFLiteDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -50,7 +48,7 @@ fun MainScreen() {
     val items = listOf(
         Screen.ObjectDetection,
         Screen.MediaPipeDetection,
-        Screen.FutureFeature2
+        Screen.LlmInference
     )
 
     ModalNavigationDrawer(
@@ -99,23 +97,11 @@ fun MainScreen() {
                 }
                 composable(Screen.MediaPipeDetection.route) {
                     MediaPipeDetectionScreen()
-//                    PlaceholderScreen("Future Feature 1")
                 }
-                composable(Screen.FutureFeature2.route) {
-                    PlaceholderScreen("Future Feature 2")
+                composable(Screen.LlmInference.route) {
+                    LlmInferenceScreen()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun PlaceholderScreen(title: String) {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Text(
-            text = "Welcome to $title",
-            modifier = Modifier.padding(16.dp),
-            style = MaterialTheme.typography.headlineMedium
-        )
     }
 }
